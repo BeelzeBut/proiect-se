@@ -16,23 +16,36 @@ const ImageUploader: React.FC = () => {
     };
 
     const uploadImages = async () => {
-        const formData = new FormData();
-        selectedImages.forEach(image => formData.append('images', image));
+        const uploadPromises = selectedImages.map(async (image) => {
+            const formData = new FormData();
+            formData.append('file', image);
 
-        try {
-            const response = await axios.post('your_api_endpoint', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
+            try {
+                const response = await axios.post('http://127.0.0.1:5000/predict', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+                console.log('Uploaded:', image.name, response.data);
+                return response.data;
+            } catch (error) {
+                console.error('Error uploading image:', image.name, error);
+                return { error: true, message: `Error uploading image: ${image.name}`, detail: error };
+            }
+        });
+
+        Promise.all(uploadPromises)
+            .then((results) => {
+                console.log('All images uploaded:', results);
+                alert('All images uploaded successfully!');
+                setSelectedImages([]);
+            })
+            .catch((error) => {
+                console.error('Error in uploading one or more images:', error);
+                alert('Error in uploading one or more images. Check console for details.');
             });
-            console.log(response.data);
-            alert('Images uploaded successfully!');
-            setSelectedImages([]);
-        } catch (error) {
-            console.error('Error uploading images:', error);
-            alert('Failed to upload images.');
-        }
     };
+
 
     return (
         <Grid container spacing={2} justifyContent="center" alignItems="center" style={{ marginTop: '20px' }}>
@@ -65,7 +78,7 @@ const ImageUploader: React.FC = () => {
                                 </Grid>
                             </Paper>
                         ))}
-                        {selectedImages.length === 0 && <p>Nicio imagine selectata</p>}
+                        {selectedImages.length === 0 && <p>No image selected</p>}
                     </div>
 
                     <Box display={'flex'} justifyContent={'flex-end'} marginTop={'16px'}>

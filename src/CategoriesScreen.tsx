@@ -4,28 +4,20 @@ import { Grid, Paper, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const categories: string[] = [
-    "Rochii",
-    "Tricouri",
-    "Pantaloni",
-    "Bluze",
-    "Fuste",
-    "Jachete",
-    "Paltoane",
-    "Geci",
-    "Camasi",
-    "Pulovere",
-    "Costume",
-    "Jeans",
-    "Sacouri",
-    "Lenjerie",
-    "Pijamale"
+    "Belts",
+    "Dress",
+    "Jackets",
+    "Socks",
+    "Trousers",
+    "T-Shirt"
 ];
+
 
 const CategoriesScreen: React.FC = () => {
     const navigate = useNavigate();
 
     const handleDoubleClick = (category: string) => {
-        console.log(`Navigate to ${category}`);
+        navigate(`/category/${category}`);
     };
 
     return (

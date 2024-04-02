@@ -11,7 +11,7 @@ const AppBarNavigation: React.FC = () => {
                     Proiect SE
                 </Typography>
                 <Button color="inherit" component={Link} to="/">Upload</Button>
-                <Button color="inherit" component={Link} to="/categorii">Categorii</Button>
+                <Button color="inherit" component={Link} to="/categorii">Categories</Button>
             </Toolbar>
         </AppBar>
     );
